@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programação Financeira</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f3f3f3;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        h1 {
+            color: #ff8c00;
+            font-size: 24px;
+            text-shadow: 2px 2px #ffa500;
+        }
+
+        .caixa {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 10px;
+            color: #ff8c00;
+            text-shadow: 1px 1px #ffa500;
+        }
+
+        input[type="number"], input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #ff8c00;
+            border-radius: 5px;
+            box-shadow: inset 2px 2px 5px rgba(255, 165, 0, 0.3);
+            font-size: 16px;
+        }
+
+        input[type="text"] {
+            background-color: #f9f9f9;
+            font-weight: bold;
+            color: #555;
+        }
+
+        button {
+            background-color: #ff8c00;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 2px 2px 8px rgba(255, 140, 0, 0.5);
+            transition: transform 0.2s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        .resultado {
+            margin-top: 20px;
+        }
+
+        .gasto-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .gasto-item input[type="text"] {
+            width: 60%;
+        }
+
+        .gasto-item input[type="number"] {
+            width: 35%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Programação Financeira</h1>
+        <div class="caixa">
+            <label for="valorCaixa">Valor em Caixa:</label>
+            <input type="number" id="valorCaixa" placeholder="Ex: 1000">
+
+            <label>Gastos:</label>
+            <div id="gastosContainer">
+                <!-- Os novos campos de gasto serão adicionados aqui -->
+            </div>
+            
+            <button onclick="adicionarGasto()">Adicionar Gasto</button>
+            <button onclick="calcular()">Calcular Total Restante</button>
+
+            <div class="resultado">
+                <label>Total Restante:</label>
+                <input type="text" id="totalRestante" readonly>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function adicionarGasto() {
+            const gastosContainer = document.getElementById("gastosContainer");
+
+            // Cria um novo elemento para o gasto
+            const novoGasto = document.createElement("div");
+            novoGasto.classList.add("gasto-item");
+
+            // Campo de descrição do gasto
+            const descricaoGasto = document.createElement("input");
+            descricaoGasto.type = "text";
+            descricaoGasto.placeholder = "Descrição do Gasto";
+
+            // Campo de valor do gasto
+            const valorGasto = document.createElement("input");
+            valorGasto.type = "number";
+            valorGasto.placeholder = "Valor";
+
+            // Adiciona os campos ao novo elemento de gasto
+            novoGasto.appendChild(descricaoGasto);
+            novoGasto.appendChild(valorGasto);
+
+            // Adiciona o novo gasto ao container de gastos
+            gastosContainer.appendChild(novoGasto);
+        }
+
+        function calcular() {
+            const valorCaixa = parseFloat(document.getElementById("valorCaixa").value) || 0;
+            const gastosContainer = document.getElementById("gastosContainer");
+            const gastos = gastosContainer.getElementsByClassName("gasto-item");
+
+            let totalGastos = 0;
+
+            // Soma todos os valores dos gastos
+            for (let gasto of gastos) {
+                const valorGasto = parseFloat(gasto.querySelector('input[type="number"]').value) || 0;
+                totalGastos += valorGasto;
+            }
+
+            const totalRestante = valorCaixa - totalGastos;
+            document.getElementById("totalRestante").value = totalRestante.toFixed(2);
+        }
+    </script>
+</body>
+</html>
